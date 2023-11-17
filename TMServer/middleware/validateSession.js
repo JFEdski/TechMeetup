@@ -10,7 +10,7 @@ async function validateSession(req, res, next) {
 
     const user = await User.findById(decoded.id);
 
-    const event = await Event;
+    const event = await Event.findById(decoded.id);
 
     if (!user) throw new Error("User Not Found");
     req.user = user;

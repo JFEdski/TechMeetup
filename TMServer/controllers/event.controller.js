@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const User = require("../models/users.model");
 const Event = require("../models/event.model");
 const validateSession = require("../middleware/validateSession");
 
@@ -12,7 +13,7 @@ router.post("/event", async (req, res) => {
       name: req.body.name,
       date: req.body.date,
       description: req.body.description,
-      owner: req.user._id,
+      //owner: req.user._id,
     };
 
     const event = new Event(eventCard);
@@ -25,3 +26,5 @@ router.post("/event", async (req, res) => {
     errorResponse(res, err);
   }
 });
+
+module.exports = router;
