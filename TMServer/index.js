@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 
 const cors = require("cors");
 
-const user = require("./controllers/user.controllers");
+const user = require("./controllers/user.controller");
 
 const { PORT, MONGO } = process.env;
 
