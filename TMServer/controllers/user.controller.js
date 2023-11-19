@@ -1,17 +1,14 @@
 const router = require("express").Router();
-
 const User = require("../models/users.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 // User Signup
-
 router.post("/signup", async (req, res) => {
   try {
     const user = new User({
       userName: req.body.userName,
       email: req.body.email,
-
       password: bcrypt.hashSync(req.body.password, 12),
     });
     const newUser = await user.save();

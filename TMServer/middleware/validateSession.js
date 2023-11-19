@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/users.model");
+const Event = require("../models/event.model");
 
 async function validateSession(req, res, next) {
   try {
@@ -9,8 +10,13 @@ async function validateSession(req, res, next) {
 
     const user = await User.findById(decoded.id);
 
+    const event = await Event.findById(decoded.id);
+
     if (!user) throw new Error("User Not Found");
     req.user = user;
+
+    if (!event) throw new Error("Event Not Found");
+    req.event = event;
 
     return next();
   } catch (err) {
