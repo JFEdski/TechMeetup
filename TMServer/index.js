@@ -11,6 +11,10 @@ const cors = require("cors");
 const user = require("./controllers/user.controller");
 const events = require("./controllers/event.controller");
 
+const nodemailer = require("nodemailer"); // see if needed??? 
+
+const { PORT, MONGO } = process.env;
+
 
 app.use(express.json());
 app.use(cors());
