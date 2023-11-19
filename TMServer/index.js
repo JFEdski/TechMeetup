@@ -11,6 +11,7 @@ const cors = require("cors");
 const user = require("./controllers/user.controller");
 const events = require("./controllers/event.controller");
 
+
 app.use(express.json());
 app.use(cors());
 app.use("/user", user);
