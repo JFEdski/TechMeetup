@@ -10,6 +10,8 @@ const cors = require("cors");
 
 const user = require("./controllers/user.controller");
 
+const nodemailer = require("nodemailer"); // see if needed??? 
+
 const { PORT, MONGO } = process.env;
 
 mongoose.connect(`${MONGO}/TechMeetup`);
