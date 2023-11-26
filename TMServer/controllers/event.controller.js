@@ -27,4 +27,23 @@ router.post("/event", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    let owner = req.user.id;
+
+    const deletedEvent = await Event.deleteOne({ _id: id, owner });
+    if (!deletedEvent.deletedCount) {
+      throw new Error("Event does not exist");
+    }
+
+    res.status(200).json({
+      message: "Event has been deleted",
+      deletedEvent,
+    });
+  } catch (error) {
+    errorResponse(res, error);
+  }
+});
+
 module.exports = router;
