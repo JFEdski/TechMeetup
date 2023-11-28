@@ -6,14 +6,17 @@ const validateSession = require("../middleware/validateSession");
 function errorResponse(res, err) {
   res.status(500).json({ ERROR: err.message });
 }
-
-router.post("/event", async (req, res) => {
+// Added validate session
+router.post("/event", validateSession, async (req, res) => {
   try {
+
+    const ownerId = req.user._id;
+
     const eventCard = {
       name: req.body.name,
       date: req.body.date,
       description: req.body.description,
-      //owner: req.user._id,
+      owner: ownerId,
     };
 
     const event = new Event(eventCard);

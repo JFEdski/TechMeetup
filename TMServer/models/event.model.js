@@ -13,10 +13,14 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  //   owner: {
-  //     type: String,
-  //     required: true,
-  //   },
+
+  // Uncommented the owner because we need this to can create a event by a owner who is the admin "role".
+  owner: {
+    // type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: true
+  },
 });
 
 module.exports = mongoose.model("Event", EventSchema);
