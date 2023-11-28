@@ -6,6 +6,9 @@ const bcrypt = require("bcrypt");
 // User Signup
 router.post("/signup", async (req, res) => {
   try {
+    const { userName, email, password, role } = req.body;
+
+
     const user = new User({
       userName: req.body.userName,
       email: req.body.email,
