@@ -38,3 +38,26 @@
 // main().catch(console.error);
 
 // module.exports = router;
+
+
+const Agenda = require('agenda');
+const MongoClient = require('mongodb').MongoClient;
+
+const connectionString = 'mongodb://localhost/agenda';
+
+(async function() {
+  const client = await MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+  const agenda = new Agenda({ mongo: client.db('agenda') });
+  // Define tasks
+  agenda.define('send email', async (job, done) => {
+    console.log('Sending email...');
+    done();
+  });
+  // Schedule tasks
+  await agenda.start();
+  agenda.every('1 hour', 'send email');
+})();
+
+
+
+// Dateobject in JS to find # days before s
