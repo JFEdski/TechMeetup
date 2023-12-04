@@ -45,5 +45,38 @@ router.get('/allTags', async (res, req) =>{
 });
 
 //retrieve events based on tags
+router.get('/eventsByTag/:tag', async (req, res) => {
+  const tag = req.params.tag;
+  const eventsWithTag = Events.filter(event => event.tags.includes(tag));
+  res.json(eventsWithTag);
+});
+
+//retrieve events based on location
+router.get('/eventsByLocation/:location', async (req, res) => {
+  const location = req.params.location;
+  const eventsAtLocation = Events.filter(event => event.location === location);
+  res.json(eventsAtLocation);
+});
+
+//retrieve events based on date
+router.get('/eventsByDate/:date', async (req, res) => {
+  const date = req.params.date;
+  const eventsOnDate = Events.filter(event => event.date === date);
+  res.json(eventsOnDate);
+});
+
+//retrieve events based on time
+router.get('/eventsByDate/:date', async (req, res) => {
+  const date = req.params.date;
+  const eventsOnDate = Events.filter(event => event.date === date);
+  res.json(eventsOnDate);
+});
+
+//retreive events based on language/category
+router.get("/event/category", (req, res) => {
+  const { category } = req.body;
+  const result = events.filter((e) => e.category === category);
+  res.json({ message: "Success!", events: result });
+});
 
 module.exports = router;  
