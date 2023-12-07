@@ -30,3 +30,6 @@ const mailOptions = {
 
 // user id (validates session/ event id (in req body or parameter path vaiable /register/:event)
 // table with both user and event id
+// register model / 
+// start method for cron
+// function in event controller
