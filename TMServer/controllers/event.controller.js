@@ -11,14 +11,14 @@ router.post("/event", validateSession, async (req, res) => {
   try {
 
     const ownerId = req.user._id;
-
+    
     const eventCard = {
       name: req.body.name,
       date: req.body.date,
       description: req.body.description,
-      owner: ownerId,
+     // owner: ownerId,
     };
-
+    
     const event = new Event(eventCard);
     const newEvent = await event.save();
     res.status(200).json({
@@ -29,5 +29,23 @@ router.post("/event", validateSession, async (req, res) => {
     errorResponse(res, err);
   }
 });
+
+    //make register endpoint, take in user and event ID
+router.patch ("/event/register/:id", validateSession, async (req, res) => {
+
+  try {
+    
+    const user = req.user._id;
+
+    const event = req.params.id
+    const register = await Event.findOneAndUpdate({_id:event})
+    console.log('Register',register);
+    
+  } catch (err) {
+    errorResponse(res,err);
+  }
+
+}) 
+  
 
 module.exports = router;
