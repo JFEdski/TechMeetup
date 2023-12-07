@@ -15,6 +15,10 @@ const EventSchema = new Schema({
     required: true,
   },
 
+  attendee: {
+    type: []
+  },
+
   // Uncommented the owner because we need this to create an event by an owner who is the admin "role".
   owner: {
     // type: String,
