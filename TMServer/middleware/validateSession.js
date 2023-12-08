@@ -15,8 +15,8 @@ async function validateSession(req, res, next) {
     if (!user) throw new Error("User Not Found");
     req.user = user;
 
-    if (!event) throw new Error("Event Not Found");
-    req.event = event;
+    // if (!event) throw new Error("Event Not Found");
+    // req.event = event;
 
     return next();
   } catch (err) {
