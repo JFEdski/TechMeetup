@@ -1,4 +1,4 @@
-const cron = "node-cron";
+const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 //const app = epxress ()
 
@@ -16,7 +16,7 @@ const reminderEmail = cron.schedule("* * * * *", () => {
   });
   const mailOptions = resend.emails.send({
     from: "andyus.testing@gmail.com", //sender addy
-    to: "abc@.com", // receiver addy
+    to: req.user.email, // receiver addy
     subject: "Tech Event Reminder",
     html: "<p> Your event is in 5 days</p>", //plain twxt body
   });
