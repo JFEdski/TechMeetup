@@ -2,8 +2,8 @@ const router = require("express").Router();
 const User = require("../models/users.model");
 const Event = require("../models/event.model");
 const validateSession = require("../middleware/validateSession");
-
-
+const  reminderEmail = require("../controllers/emailReminder");
+console.log(reminderEmail)
 
 
 
@@ -12,7 +12,7 @@ function errorResponse(res, err) {
 }
 // Added validate session
 router.post("/event", validateSession, async (req, res) => {
-  console.log('hello/event')
+  // console.log('hello/event')
   try {
 
     const ownerId = req.user._id;
@@ -48,20 +48,50 @@ router.patch ("/event/register/:id", validateSession, async (req, res) => {
 
     const event = req.params.id
     const myEvent = await Event.findById({_id:event})
+    
+    let attendeeArray = myEvent.attendee //.push(user) //save- update event, 
+    console.log(attendeeArray)
+    if (attendeeArray.includes(user) ){
+      console.log('already registered')
+    
+    } else {
+      attendeeArray.push(user)
+      const reminderEmail = cron.schedule ("* * * * *", () => {
+        console.log("runs every min");
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "andyus.testing@gmail.com", //put email here
+            pass: "$2b$12$A3BfOfhdS2v4vGYueNtGFe/iFbqkAji/B5AtoXoqb2NMglKbWsK/K", // password here
+          },
+        });
+      resend.emails.send({
+          from: "andyus.testing@gmail.com", //sender addy
+          to: "abc@.com", // receiver addy
+          subject: "Tech Event Reminder",
+          html: "<p> Your event is in 5 days</p>", //plain twxt body
+        });
+      });
+      reminderEmail.start() 
+    } 
+    
 
-    attendeeArray = myEvent.attendee.push(user) //save- update event, 
+    
+
+
+    //dont douubke user id
 
     myEvent.save()
 
-    console.log('myEvent',myEvent);
-    console.log(myEvent.attendee) 
+    // console.log('myEvent',myEvent);
+    // console.log(myEvent.attendee) 
     
   } catch (err) {
     errorResponse(res,err);
   }
 
 }) 
-  
+//
 
 module.exports = router;
 //res . status. res.json 
