@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const EventSchema = new mongoose.Schema({
+const EventSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -14,12 +15,16 @@ const EventSchema = new mongoose.Schema({
     required: true,
   },
 
-  // Uncommented the owner because we need this to can create a event by a owner who is the admin "role".
+  attendee: {
+    type: []
+  },
+
+  // Uncommented the owner because we need this to create an event by an owner who is the admin "role".
   owner: {
     // type: String,
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
-    ref: true
+    ref: 'owner'
   },
 });
 

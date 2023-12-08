@@ -18,10 +18,11 @@ const { PORT, MONGO } = process.env;
 
 app.use(express.json());
 app.use(cors());
+
 app.use("/user", user);
 app.use("/events", events);
 
-// const { PORT, MONGO } = process.env;
+
 mongoose.connect(`${MONGO}/TechMeetup`);
 
 const db = mongoose.connection;
