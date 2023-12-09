@@ -24,6 +24,7 @@ router.post("/event", validateSession, async (req, res) => {
       date: req.body.date,
       description: req.body.description,
       category: req.body.category,
+      location: req.body.location,
       owner: ownerId,
     };
 
@@ -45,10 +46,6 @@ router.patch("/event/register/:id", validateSession, async (req, res) => {
     const user = req.user._id;
 
     //attendeeArray.push = myEvent.attendee
-
-    const event = req.params.id;
-    const myEvent = await Event.findById({ _id: event });
-
 
     const event = req.params.id
     const myEvent = await Event.findById({_id:event})

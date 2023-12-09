@@ -26,6 +26,10 @@ const EventSchema = new Schema({
       "HTML/CSS"
     ]
   },
+  location: {
+    type: String,
+    required: false,
+  },
   attendee: {
     type: []
   },
