@@ -2,8 +2,13 @@ const router = require("express").Router();
 const User = require("../models/users.model");
 const Event = require("../models/event.model");
 const validateSession = require("../middleware/validateSession");
-const reminderEmail = require("../controllers/emailReminder");
-console.log(reminderEmail);
+
+const  reminderEmail = require("../controllers/emailReminder");
+const cron = require("node-cron");
+const nodemailer = require("nodemailer");
+
+console.log(reminderEmail)
+
 
 function errorResponse(res, err) {
   res.status(500).json({ ERROR: err.message });
@@ -44,10 +49,18 @@ router.patch("/event/register/:id", validateSession, async (req, res) => {
     const event = req.params.id;
     const myEvent = await Event.findById({ _id: event });
 
-    let attendeeArray = myEvent.attendee; //.push(user) //save- update event,
-    console.log(attendeeArray);
-    if (attendeeArray.includes(user)) {
-      console.log("already registered");
+
+    const event = req.params.id
+    const myEvent = await Event.findById({_id:event})
+    const attendee = await User.findById({_id:user})
+
+    console.log(attendee)
+
+    let attendeeArray = myEvent.attendee //.push(user) //save- update event, 
+    console.log(attendeeArray)
+    if (attendeeArray.includes(user) ){
+      console.log('already registered')
+    
     } else {
       attendeeArray.push(user);
       const reminderEmail = cron.schedule("* * * * *", () => {
@@ -59,11 +72,14 @@ router.patch("/event/register/:id", validateSession, async (req, res) => {
             pass: "$2b$12$A3BfOfhdS2v4vGYueNtGFe/iFbqkAji/B5AtoXoqb2NMglKbWsK/K", // password here
           },
         });
-        resend.emails.send({
+
+      
+        transporter.sendMail({
+
           from: "andyus.testing@gmail.com", //sender addy
-          to: "abc@.com", // receiver addy
+          to: attendee.email, // receiver addy
           subject: "Tech Event Reminder",
-          html: "<p> Your event is in 5 days</p>", //plain twxt body
+          html: "<p> Your event is in 7 days</p>", //plain twxt body
         });
       });
       reminderEmail.start();
