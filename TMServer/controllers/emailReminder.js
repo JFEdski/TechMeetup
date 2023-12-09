@@ -1,4 +1,4 @@
-const cron = "node-cron";
+const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 //const app = epxress ()
 
@@ -27,6 +27,5 @@ const reminderEmail = cron.schedule("* * * * *", () => {
 // register model /
 // start method for cron
 // function in event controller
-
 
 module.exports = reminderEmail;

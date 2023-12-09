@@ -18,6 +18,7 @@ router.post("/event", validateSession, async (req, res) => {
       name: req.body.name,
       date: req.body.date,
       description: req.body.description,
+      category: req.body.category,
       owner: ownerId,
     };
 

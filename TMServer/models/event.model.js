@@ -14,7 +14,18 @@ const EventSchema = new Schema({
     type: String,
     required: true,
   },
-
+  category: {
+    type: [
+      "JavaScript",
+      "Python",
+      "Java",
+      "C/C#/C++",
+      "Ruby",
+      "SQL",
+      "PHP",
+      "HTML/CSS"
+    ]
+  },
   attendee: {
     type: []
   },
