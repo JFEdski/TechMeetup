@@ -2,7 +2,7 @@
 const router = require("express").Router();
 const User = require("../models/users.model");
 
-const {Resend} = require("resend");
+const { Resend } = require("resend");
 const nodemailer = require("nodemailer");
 
 const jwt = require("jsonwebtoken");
@@ -12,15 +12,15 @@ const resend = new Resend(process.env.EMAILKEY);
 // User Signup
 router.post("/signup", async (req, res) => {
   try {
-    console.log('hello')
+    console.log("hello");
     const { userName, email, password, role } = req.body;
 
     const data = await resend.emails.send({
       from: "onboarding@resend.dev", //
       to: email,
-      subject: 'Verification Email',
-      html: "<strong>it works!</strong>"
-    }) 
+      subject: "Verification Email",
+      html: "<strong>it works!</strong>",
+    });
     console.log(data);
     const user = new User({
       userName: req.body.userName,
@@ -39,7 +39,6 @@ router.post("/signup", async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-
 });
 
 router.post("/login", async (req, res) => {
