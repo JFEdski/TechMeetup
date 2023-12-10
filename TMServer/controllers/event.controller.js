@@ -2,12 +2,10 @@ const router = require("express").Router();
 const User = require("../models/users.model");
 const Event = require("../models/event.model");
 const validateSession = require("../middleware/validateSession");
-const  reminderEmail = require("../controllers/emailReminder");
+const reminderEmail = require("../controllers/emailReminder");
+console.log(reminderEmail)
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
-
-console.log(reminderEmail)
-
 
 
 function errorResponse(res, err) {
@@ -16,17 +14,17 @@ function errorResponse(res, err) {
 // Added validate session
 router.post("/event", validateSession, async (req, res) => {
   // console.log('hello/event')
+  console.log("DATE", 'keith')
   try {
 
     const ownerId = req.user._id;
-    
     const eventCard = {
       name: req.body.name,
       date: req.body.date,
       description: req.body.description,
       owner: ownerId,
     };
-    
+
     const event = new Event(eventCard);
     const newEvent = await event.save();
     console.log(newEvent);
@@ -39,30 +37,28 @@ router.post("/event", validateSession, async (req, res) => {
   }
 });
 
-    //make register endpoint, take in user and event ID
-router.patch ("/event/register/:id", validateSession, async (req, res) => {
+//make register endpoint, take in user and event ID
+router.patch("/event/register/:id", validateSession, async (req, res) => {
 
   try {
-    
+
     const user = req.user._id;
-    
+
     //attendeeArray.push = myEvent.attendee
 
 
     const event = req.params.id
-    const myEvent = await Event.findById({_id:event})
-    const attendee = await User.findById({_id:user})
+    const myEvent = await Event.findById({ _id: event })
+    const attendee = await Event.findById({ _id: user })
 
-    console.log(attendee)
-
-    let attendeeArray = myEvent.attendee //.push(user) //save- update event, 
+    let attendeeArray = myEvent.attendee //.push(user) //save- update event,
     console.log(attendeeArray)
-    if (attendeeArray.includes(user) ){
+    if (attendeeArray.includes(user)) {
       console.log('already registered')
-    
+
     } else {
       attendeeArray.push(user)
-      const reminderEmail = cron.schedule ("* * * * *", () => {
+      const reminderEmail = cron.schedule("* * * * *", () => {
         console.log("runs every min");
         const transporter = nodemailer.createTransport({
           service: "gmail",
@@ -71,19 +67,22 @@ router.patch ("/event/register/:id", validateSession, async (req, res) => {
             pass: "$2b$12$A3BfOfhdS2v4vGYueNtGFe/iFbqkAji/B5AtoXoqb2NMglKbWsK/K", // password here
           },
         });
-      
-        transporter.sendMail({
+        ({
           from: "andyus.testing@gmail.com", //sender addy
           to: attendee.email, // receiver addy
           subject: "Tech Event Reminder",
-          html: "<p> Your event is in 7 days</p>", //plain twxt body
+          html: "<p> Your event is in 5 days</p>", //plain twxt body
+        });
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) console.log(error);
+          else console.log('Email sent: ' + info.response);
         });
       });
-      reminderEmail.start() 
-    } 
-    
+      reminderEmail.start()
+    }
 
-    
+
+
 
 
     //dont douubke user id
@@ -91,14 +90,14 @@ router.patch ("/event/register/:id", validateSession, async (req, res) => {
     myEvent.save()
 
     // console.log('myEvent',myEvent);
-    // console.log(myEvent.attendee) 
-    
+    // console.log(myEvent.attendee)
+
   } catch (err) {
-    errorResponse(res,err);
+    errorResponse(res, err);
   }
 
-}) 
+})
 //
 
 module.exports = router;
-//res . status. res.json 
+//res . status. res.json
