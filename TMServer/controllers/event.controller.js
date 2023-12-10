@@ -22,6 +22,7 @@ router.post("/event", validateSession, async (req, res) => {
     const eventCard = {
       name: req.body.name,
       date: req.body.date,
+      time: req.body.time,
       description: req.body.description,
       category: req.body.category,
       location: req.body.location,
@@ -35,6 +36,28 @@ router.post("/event", validateSession, async (req, res) => {
       message: "New Event Created!",
       event: newEvent,
     });
+  } catch (err) {
+    errorResponse(res, err);
+  }
+});
+
+router.get("/event/:id", async (req, res) => {
+  try {
+    const singleEvent = await Event.findOne({ _id: req.params.id });
+
+    res.status(200).json({ found: singleEvent });
+  } catch (err) {
+    errorResponse(res, err);
+  }
+});
+
+router.get("/list", async (req, res) => {
+  try {
+    const allEvents = await Event.find();
+    allEvents.length > 0 ?
+    res.status(200).json({ found: allEvents })
+    :
+    res.status(404).json({ message: "No Events Found" });
   } catch (err) {
     errorResponse(res, err);
   }
@@ -92,7 +115,7 @@ router.patch("/event/register/:id", validateSession, async (req, res) => {
     errorResponse(res, err);
   }
 });
-//
+
 
 module.exports = router;
-//res . status. res.json
+
