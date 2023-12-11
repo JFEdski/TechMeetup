@@ -12,8 +12,10 @@ const resend = new Resend(process.env.EMAILKEY);
 // User Signup
 router.post("/signup", async (req, res) => {
   try {
+
     console.log('hello')
     const { userName, firstName, lastName, email, password, role } = req.body;
+
 
     const data = await resend.emails.send({
       from: "onboarding@resend.dev", //
@@ -41,7 +43,6 @@ router.post("/signup", async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-
 });
 
 router.post("/login", async (req, res) => {

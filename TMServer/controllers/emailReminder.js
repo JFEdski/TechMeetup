@@ -38,3 +38,4 @@ const reminderEmail = cron.schedule("* * * * *", () => {
 // function in event controller
 
 module.exports = reminderEmail;
+

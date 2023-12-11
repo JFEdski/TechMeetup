@@ -7,14 +7,33 @@ const EventSchema = new Schema({
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   description: {
     type: String,
     required: true,
   },
-
+  time: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: [
+      "JavaScript",
+      "Python",
+      "Java",
+      "C/C#/C++",
+      "Ruby",
+      "SQL",
+      "PHP",
+      "HTML/CSS"
+    ]
+  },
+  location: {
+    type: String,
+    required: false,
+  },
   attendee: {
     type: []
   },

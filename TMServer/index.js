@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/user", user);
+
 app.use("/events", events);
 
 
