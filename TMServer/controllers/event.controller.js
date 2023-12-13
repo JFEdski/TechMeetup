@@ -33,6 +33,7 @@ router.post("/event", validateSession, async (req, res) => {
     const eventCard = {
       name: req.body.name,
       date: req.body.date,
+      time: req.body.time,
       description: req.body.description,
       time: req.body.time,
       category: req.body.category,
@@ -52,7 +53,30 @@ router.post("/event", validateSession, async (req, res) => {
   }
 });
 
+router.get("/event/:id", async (req, res) => {
+  try {
+    const singleEvent = await Event.findOne({ _id: req.params.id });
+
+    res.status(200).json({ found: singleEvent });
+  } catch (err) {
+    errorResponse(res, err);
+  }
+});
+
+router.get("/list", async (req, res) => {
+  try {
+    const allEvents = await Event.find();
+    allEvents.length > 0 ?
+    res.status(200).json({ found: allEvents })
+    :
+    res.status(404).json({ message: "No Events Found" });
+  } catch (err) {
+    errorResponse(res, err);
+  }
+});
+
 //make register endpoint, take in user and event ID
+
 // router.patch("/event/register/:id", validateSession, async (req, res) => {
 
 //   try {
@@ -122,4 +146,60 @@ router.post("/event", validateSession, async (req, res) => {
 
 module.exports = router;
 // //res . status. res.json
+
+router.patch("/event/register/:id", validateSession, async (req, res) => {
+  try {
+    const user = req.user._id;
+
+    //attendeeArray.push = myEvent.attendee
+
+    const event = req.params.id
+    const myEvent = await Event.findById({_id:event})
+    const attendee = await User.findById({_id:user})
+
+    console.log(attendee)
+
+    let attendeeArray = myEvent.attendee //.push(user) //save- update event, 
+    console.log(attendeeArray)
+    if (attendeeArray.includes(user) ){
+      console.log('already registered')
+    
+    } else {
+      attendeeArray.push(user);
+      const reminderEmail = cron.schedule("* * * * *", () => {
+        console.log("runs every min");
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "andyus.testing@gmail.com", //put email here
+            pass: "$2b$12$A3BfOfhdS2v4vGYueNtGFe/iFbqkAji/B5AtoXoqb2NMglKbWsK/K", // password here
+          },
+        });
+
+      
+        transporter.sendMail({
+
+          from: "andyus.testing@gmail.com", //sender addy
+          to: attendee.email, // receiver addy
+          subject: "Tech Event Reminder",
+          html: "<p> Your event is in 7 days</p>", //plain twxt body
+        });
+      });
+      reminderEmail.start();
+    }
+
+    //dont douubke user id
+
+    myEvent.save();
+
+    // console.log('myEvent',myEvent);
+    // console.log(myEvent.attendee)
+  } catch (err) {
+    errorResponse(res, err);
+  }
+});
+
+
+module.exports = router;
+
 
