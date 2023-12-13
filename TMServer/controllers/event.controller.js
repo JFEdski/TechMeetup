@@ -12,12 +12,12 @@ function errorResponse(res, err) {
   res.status(500).json({ ERROR: err.message });
 }
 
-router.get("/event/allevents", validateSession, async (req, res) => {
+router.get("/event/list", validateSession, async (req, res) => {
   console.log("David")
   try {
-    const event = await Event.find({});
-    res.status(200).json(event);
-    console.log(event);
+    const events = await Event.find({});
+    res.status(200).json(events);
+    console.log(events);
   } catch (err) {
     errorResponse(res, err);
   }

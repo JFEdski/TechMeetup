@@ -27,7 +27,7 @@ router.post("/signup", async (req, res) => {
     const user = new User({
       userName: req.body.userName,
       firstName: req.body.firstName,
-      LastName: req.body.lastName,
+      lastName: req.body.lastName,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 12),
     });
