@@ -11,7 +11,7 @@ const cors = require("cors");
 const user = require("./controllers/user.controller");
 const events = require("./controllers/event.controller");
 
-const nodemailer = require("nodemailer"); // see if needed??? 
+const nodemailer = require("nodemailer"); // see if needed???
 
 const { PORT, MONGO } = process.env;
 
@@ -20,9 +20,10 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/user", user);
+
 app.use("/events", events);
 
-//const { PORT, MONGO } = process.env;
+
 mongoose.connect(`${MONGO}/TechMeetup`);
 
 const db = mongoose.connection;

@@ -12,18 +12,22 @@ const resend = new Resend(process.env.EMAILKEY);
 // User Signup
 router.post("/signup", async (req, res) => {
   try {
-    console.log("hello");
-    const { userName, email, password, role } = req.body;
+
+    console.log('hello')
+    const { userName, firstName, lastName, email, password, role } = req.body;
+
 
     const data = await resend.emails.send({
       from: "onboarding@resend.dev", //
       to: email,
-      subject: "Verification Email",
-      html: "<strong>it works!</strong>",
-    });
+      subject: 'Verification Email',
+      html: "<strong>it works!</strong>"
+    })
     console.log(data);
     const user = new User({
       userName: req.body.userName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 12),
     });
